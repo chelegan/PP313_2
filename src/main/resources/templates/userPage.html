@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="en" style="height: 648px;padding: 5px;margin: 5px;">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="row" style="background: #000000; color: rgb(255,255,255);">
+    <div class="col-4 align-self-center" style="text-align: left;transform: translate(20px) translateY(0px)">
+        <span sec:authentication="name"></span>, with roles: <span th:each="authority : ${#authentication.getAuthorities()}"  th:if="${authority.getAuthority().startsWith('ROLE_')}" th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}"></span>
+    </div>
+    <div class="col align-self-center" style="text-align: right;transform: translate(-20px) translateY(0px);" >
+        <form th:action="@{/logout}" th:method="POST" >
+            <input type="submit" class="btn btn-info" style="background: transparent; border: transparent; color: rgb(255,255,255);" value="Logout">
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col" style="max-width: 15%;padding: 1px;">
+        <ul class="nav nav-pills flex-column">
+            <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                <a class="nav-link " href="/admin/users">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/user">User</a>
+            </li>
+            <li class="nav-item"></li>
+        </ul>
+    </div>
+    <div class="col offset-0" style="background: #e8e7e7;min-height: 1000px;">
+        <div class="row">
+            <div class="col">
+                <h1>User information-page</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive" style="background: #ffffff;">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>About user</th>
+                        </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Second Name</th>
+                            <th>Age</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${user.getId()}">Id</td>
+                            <td th:text="${user.getUsername()}">UserName</td>
+                            <td th:text="${user.getFirstName()}">FirstName</td>
+                            <td th:text="${user.getLastName()}">SecondName</td>
+                            <td th:text="${user.getAge()}">Age</td>
+                            <td th:text="${user.getRoles()}">Roles</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
